@@ -2,6 +2,7 @@ package com.abhishekjagushte.careerblog;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,10 @@ import android.widget.TextView;
 
 import com.abhishekjagushte.careerblog.PostFragment.OnListFragmentInteractionListener;
 import com.abhishekjagushte.careerblog.dummy.DummyContent.DummyItem;
+import com.abhishekjagushte.careerblog.post.PostContent;
+import com.abhishekjagushte.careerblog.post.PostContent.Post;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,10 +23,10 @@ import java.util.List;
  */
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final ArrayList<Post> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyPostRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyPostRecyclerViewAdapter(ArrayList<Post> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -37,8 +41,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.postHeadline.setText(mValues.get(position).getHeadline());
+        holder.postDate.setText(mValues.get(position).getDate());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,25 +58,28 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     @Override
     public int getItemCount() {
+        Log.d("$$$$$$$$$$$$$$$$$", String.valueOf(mValues.size()));
         return mValues.size();
     }
 
+    //ViewHolder class
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView postHeadline;
+        public final TextView postDate;
+        public Post mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.post_headline);
-            mContentView = (TextView) view.findViewById(R.id.post_date);
+            postHeadline = (TextView) view.findViewById(R.id.post_headline);
+            postDate = (TextView) view.findViewById(R.id.post_date);
+            Log.d("SSSSSSSSSSSSSSSSS","RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + postDate.getText() + "'";
         }
     }
 }

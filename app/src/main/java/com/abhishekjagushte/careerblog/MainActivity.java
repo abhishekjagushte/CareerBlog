@@ -8,12 +8,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StrictMode;
+import android.widget.Toast;
 
 import com.abhishekjagushte.careerblog.dummy.DummyContent;
+import com.abhishekjagushte.careerblog.post.PostContent;
+import com.abhishekjagushte.careerblog.post.PostListDecoder;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements PostFragment.OnListFragmentInteractionListener {
 
     private DrawerLayout drawer;
+    public static Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements PostFragment.OnLi
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
+
+        handler = new Handler(Looper.getMainLooper());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -45,8 +58,14 @@ public class MainActivity extends AppCompatActivity implements PostFragment.OnLi
         }
     }
 
+
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(PostContent.Post post) {
 
     }
 }

@@ -8,13 +8,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.abhishekjagushte.careerblog.dummy.DummyContent;
 import com.abhishekjagushte.careerblog.dummy.DummyContent.DummyItem;
+import com.abhishekjagushte.careerblog.post.PostContent;
+import com.abhishekjagushte.careerblog.post.PostListDecoder;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +37,7 @@ public class PostFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    public static MyPostRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -63,6 +71,7 @@ public class PostFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_post_list, container, false);
 
         // Set the adapter
+
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -71,7 +80,18 @@ public class PostFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyPostRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+
+
+            adapter = new MyPostRecyclerViewAdapter(PostContent.ITEMS, mListener);
+            try {
+                PostListDecoder.makeHttpRequest();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            recyclerView.setAdapter(adapter);
+            //Log.d("%%%%%%%%%%%%%%%",PostContent.ITEMS.get(0).getDate());
         }
         return view;
     }
@@ -109,5 +129,6 @@ public class PostFragment extends Fragment {
         void onListFragmentInteraction(DummyItem item);
 
 
+        void onListFragmentInteraction(PostContent.Post mItem);
     }
 }
