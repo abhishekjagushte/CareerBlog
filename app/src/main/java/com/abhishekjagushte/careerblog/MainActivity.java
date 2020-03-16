@@ -1,5 +1,9 @@
 package com.abhishekjagushte.careerblog;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,24 +11,16 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.StrictMode;
-import android.widget.Toast;
-
 import com.abhishekjagushte.careerblog.dummy.DummyContent;
-import com.abhishekjagushte.careerblog.post.PostContent;
-import com.abhishekjagushte.careerblog.post.PostListDecoder;
-
-import org.json.JSONException;
-
-import java.io.IOException;
+import com.abhishekjagushte.careerblog.post.PostContent.Post;
 
 public class MainActivity extends AppCompatActivity implements PostFragment.OnListFragmentInteractionListener {
 
     private DrawerLayout drawer;
     public static Handler handler;
+    public static boolean postPageOpen = false;
+    Fragment post_fragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements PostFragment.OnLi
         toggle.syncState();
 
         if(savedInstanceState ==null){
-            Fragment fragment = new PostFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            post_fragment = new PostFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,post_fragment).commit();
         }
     }
 
@@ -53,9 +49,12 @@ public class MainActivity extends AppCompatActivity implements PostFragment.OnLi
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(postPageOpen) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, post_fragment).commit();
+                postPageOpen=false;
+        }else
             super.onBackPressed();
-        }
+
     }
 
 
@@ -65,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements PostFragment.OnLi
     }
 
     @Override
-    public void onListFragmentInteraction(PostContent.Post post) {
-
+    public void onListFragmentInteraction(Post post) {
+        Fragment post_page = new PostPage(post);
+        postPageOpen=true;
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,post_page).commit();
     }
 }

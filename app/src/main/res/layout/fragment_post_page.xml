@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        tools:context=".PostPage">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            style="@style/general_heading"
+            android:id="@+id/post_title"
+            android:layout_marginBottom="30dp"/>
+
+        <TextView
+            android:id="@+id/post_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            android:linksClickable="true"/>
+    </LinearLayout>
+
+</ScrollView>

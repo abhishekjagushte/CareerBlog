@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="custonTheme">
+        <attr name="secondary_bg" format="color"/>
+        <attr name="backgroundcolor" format="color"/>
+        <attr name="text_color" format="color"/>
+        <attr name="attended_bg" format="reference"/>
+        <attr name="bunked_bg" format="reference"/>
+        <attr name="normal_bg" format="reference"/>
+        <attr name="listview_bg" format="color"/>
+        <attr name="switchToTheme" format="string"/>
+    </declare-styleable>
+</resources>

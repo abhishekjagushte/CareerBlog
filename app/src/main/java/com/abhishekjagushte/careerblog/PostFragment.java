@@ -84,6 +84,7 @@ public class PostFragment extends Fragment {
 
             adapter = new MyPostRecyclerViewAdapter(PostContent.ITEMS, mListener);
             try {
+                PostContent.ITEMS.clear();
                 PostListDecoder.makeHttpRequest();
             } catch (IOException e) {
                 e.printStackTrace();
