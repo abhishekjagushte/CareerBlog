@@ -57,12 +57,6 @@ public class MainActivity extends AppCompatActivity implements PostFragment.OnLi
 
     }
 
-
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
-    }
-
     @Override
     public void onListFragmentInteraction(Post post) {
         Fragment post_page = new PostPage(post);
