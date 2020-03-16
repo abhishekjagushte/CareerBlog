@@ -74,7 +74,6 @@ public class PostContentDecoder {
                                 view.setMovementMethod(LinkMovementMethod.getInstance());
                             }
                         });
-                        return;
 
                     }
 
