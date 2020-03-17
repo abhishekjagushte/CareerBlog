@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class PostFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     public static MyPostRecyclerViewAdapter adapter;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -72,10 +74,10 @@ public class PostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//
-//        if (getArguments() != null) {
-//            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-//        }
+
+        if (getArguments() != null) {
+            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+        }
 
         try {
             //PostContent.ITEMS.clear();
@@ -89,29 +91,53 @@ public class PostFragment extends Fragment {
         }
     }
 
-
+    private void refreshList(){
+        try {
+            PostContent.ITEMS.clear();
+            if(PostContent.ITEMS.size()==0)
+                PostListDecoder.makeHttpRequest();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_list, container, false);
 
+         //Set the adapter
+//        if (view instanceof RecyclerView) {
+        Context context = view.getContext();
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-//            if (mColumnCount <= 1) {
-//                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//            } else {
-//                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-//            }
+
+        RecyclerView recyclerView = view.findViewById(R.id.list);
+        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshList();
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
+
+            if (mColumnCount <= 1) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            }
 
             adapter = new MyPostRecyclerViewAdapter(PostContent.ITEMS, mListener);
 
             recyclerView.setAdapter(adapter);
             //Log.d("%%%%%%%%%%%%%%%",PostContent.ITEMS.get(0).getDate());
-        }
+
         return view;
     }
 

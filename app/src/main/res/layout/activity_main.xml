@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        xmlns:tools="http://schemas.android.com/tools">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,7 +24,32 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+<!--        <android.support.design.widget.AppBarLayout-->
+<!--            android:id="@+id/appBar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="300dp"-->
+<!--            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+<!--            android:fitsSystemWindows="true">-->
+
+<!--            <android.support.design.widget.CollapsingToolbarLayout-->
+<!--                android:id="@+id/toolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
+<!--                android:fitsSystemWindows="true"-->
+<!--                app:contentScrim="?attr/colorPrimary"-->
+<!--                app:expandedTitleMarginStart="48dp"-->
+<!--                app:expandedTitleMarginEnd="64dp">-->
+
+<!--                <include layout="@layout/featured_post" />-->
+
+<!--            </android.support.design.widget.CollapsingToolbarLayout>-->
+
+<!--        </android.support.design.widget.AppBarLayout>-->
+
+
         <FrameLayout
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
