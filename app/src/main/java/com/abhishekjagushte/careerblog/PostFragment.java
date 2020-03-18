@@ -20,6 +20,9 @@ import com.abhishekjagushte.careerblog.dummy.DummyContent;
 import com.abhishekjagushte.careerblog.dummy.DummyContent.DummyItem;
 import com.abhishekjagushte.careerblog.post.PostContent;
 import com.abhishekjagushte.careerblog.post.PostListDecoder;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONException;
 
@@ -40,7 +43,15 @@ public class PostFragment extends Fragment {
     // TODO: Customize parameters
     private int     mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+
+    public void setSliderClickedListener(OnSliderClickedListener sliderClickedListener) {
+        this.sliderClickedListener = sliderClickedListener;
+    }
+
+    private OnSliderClickedListener sliderClickedListener;
     public static MyPostRecyclerViewAdapter adapter;
+    private SliderView sliderView;
+    public static SliderAdapter sliderAdapter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     /**
@@ -94,6 +105,7 @@ public class PostFragment extends Fragment {
     private void refreshList(){
         try {
             PostContent.ITEMS.clear();
+            PostFragment.sliderAdapter.notifyDataSetChanged();
             if(PostContent.ITEMS.size()==0)
                 PostListDecoder.makeHttpRequest();
         } catch (IOException e) {
@@ -108,11 +120,7 @@ public class PostFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_list, container, false);
 
-         //Set the adapter
-//        if (view instanceof RecyclerView) {
         Context context = view.getContext();
-
-
         RecyclerView recyclerView = view.findViewById(R.id.list);
         final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
 
@@ -120,12 +128,11 @@ public class PostFragment extends Fragment {
             @Override
             public void onRefresh() {
                 refreshList();
+                sliderAdapter.notifyDataSetChanged();
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-
 
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -133,11 +140,17 @@ public class PostFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            adapter = new MyPostRecyclerViewAdapter(PostContent.ITEMS, mListener);
+        sliderView = view.findViewById(R.id.imageSlider);
+        sliderAdapter = new SliderAdapter(sliderClickedListener);
 
-            recyclerView.setAdapter(adapter);
-            //Log.d("%%%%%%%%%%%%%%%",PostContent.ITEMS.get(0).getDate());
+        adapter = new MyPostRecyclerViewAdapter(PostContent.ITEMS, mListener);
 
+        recyclerView.setAdapter(adapter);
+        sliderView.setSliderAdapter(sliderAdapter);
+
+        sliderView.startAutoCycle();
+        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM);
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
         return view;
     }
 
@@ -147,11 +160,15 @@ public class PostFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
-        } else {
+
+        }else if(context instanceof OnSliderClickedListener){
+            sliderClickedListener = (OnSliderClickedListener) context;
+        }
+        else
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
-        }
     }
+
 
     @Override
     public void onDetach() {
@@ -172,5 +189,10 @@ public class PostFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(PostContent.Post mItem);
+    }
+
+    public interface OnSliderClickedListener {
+        // TODO: Update argument type and name
+        void onSliderClicked(PostContent.Post mItem);
     }
 }

@@ -113,7 +113,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemViewType(int position) {
-        if (position<5) {
+        if (position<0) {
             return TYPE_FEATURED;
         } else {
             return TYPE_NORMAL;

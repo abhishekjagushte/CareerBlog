@@ -111,6 +111,7 @@ public class PostListDecoder {
             MainActivity.handler.post(new Runnable() {
                 @Override
                 public void run() {
+                    PostFragment.sliderAdapter.notifyDataSetChanged();
                     PostFragment.adapter.notifyDataSetChanged();
                 }
             });

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.abhishekjagushte.careerblog.dummy.DummyContent;
 import com.abhishekjagushte.careerblog.post.PostContent.Post;
 
-public class MainActivity extends AppCompatActivity implements PostFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements PostFragment.OnListFragmentInteractionListener, PostFragment.OnSliderClickedListener{
 
     private DrawerLayout drawer;
     public static Handler handler;
@@ -62,5 +63,22 @@ public class MainActivity extends AppCompatActivity implements PostFragment.OnLi
         Fragment post_page = new PostPage(post);
         postPageOpen=true;
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,post_page).commit();
+    }
+
+    @Override
+    public void onSliderClicked(Post post) {
+        Fragment post_page = new PostPage(post);
+        postPageOpen=true;
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,post_page).commit();
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        super.onAttachFragment(fragment);
+        if(fragment instanceof PostFragment)
+        {
+            PostFragment postFragment = (PostFragment) fragment;
+            postFragment.setSliderClickedListener(this);
+        }
     }
 }
