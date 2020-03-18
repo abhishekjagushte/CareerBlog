@@ -91,8 +91,6 @@ public class PostFragment extends Fragment {
         }
 
         try {
-            //PostContent.ITEMS.clear();
-
             if(PostContent.ITEMS.size()==0)
                 PostListDecoder.makeHttpRequest();
         } catch (IOException e) {
@@ -105,7 +103,6 @@ public class PostFragment extends Fragment {
     private void refreshList(){
         try {
             PostContent.ITEMS.clear();
-            PostFragment.sliderAdapter.notifyDataSetChanged();
             if(PostContent.ITEMS.size()==0)
                 PostListDecoder.makeHttpRequest();
         } catch (IOException e) {
@@ -142,12 +139,12 @@ public class PostFragment extends Fragment {
 
         sliderView = view.findViewById(R.id.imageSlider);
         sliderAdapter = new SliderAdapter(sliderClickedListener);
-
         adapter = new MyPostRecyclerViewAdapter(PostContent.ITEMS, mListener);
 
         recyclerView.setAdapter(adapter);
         sliderView.setSliderAdapter(sliderAdapter);
-
+        sliderAdapter.notifyDataSetChanged();
+        sliderView.setScrollTimeInSec(4);
         sliderView.startAutoCycle();
         sliderView.setIndicatorAnimation(IndicatorAnimations.WORM);
         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);

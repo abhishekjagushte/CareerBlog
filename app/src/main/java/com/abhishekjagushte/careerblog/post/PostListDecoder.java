@@ -51,9 +51,14 @@ public class PostListDecoder {
                     if(http[0].getResponseCode() == 200){
                         inputStream[0] = http[0].getInputStream();
                         posts[0] = parseJSON(readInputStream(inputStream[0]));
-                        //PostContent.ITEMS = posts[0];
-                        Log.d("*********************",PostContent.ITEMS.get(0).getHeadline());
-                        return;
+
+                        MainActivity.handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                PostFragment.adapter.notifyDataSetChanged();
+                                PostFragment.sliderAdapter.notifyDataSetChanged();
+                            }
+                        });
 
                     }
 
@@ -107,14 +112,6 @@ public class PostListDecoder {
             Post post = new Post(title, "Admin", date, id);
             post_list.add(post);
             PostContent.ITEMS.add(post);
-
-            MainActivity.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    PostFragment.sliderAdapter.notifyDataSetChanged();
-                    PostFragment.adapter.notifyDataSetChanged();
-                }
-            });
 
         }
 
