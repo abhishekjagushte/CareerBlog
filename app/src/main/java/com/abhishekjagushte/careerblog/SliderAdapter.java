@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.abhishekjagushte.careerblog.post.DownloadImageTask;
 import com.abhishekjagushte.careerblog.post.PostContent;
 import com.abhishekjagushte.careerblog.post.PostContent.Post;
 import com.smarteist.autoimageslider.SliderViewAdapter;
@@ -33,6 +34,9 @@ public class SliderAdapter extends SliderViewAdapter {
         if(position<5){
             final Post post = PostContent.ITEMS.get(position);
             ((SliderViewHolder)viewHolder).title.setText(post.getHeadline());
+
+            new DownloadImageTask(((SliderViewHolder)viewHolder).featured_image).execute(PostContent.ITEMS.get(position).getImageURL());
+
             ((SliderViewHolder) viewHolder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

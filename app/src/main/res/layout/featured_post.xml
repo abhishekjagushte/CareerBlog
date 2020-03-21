@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView android:layout_width="match_parent"
-    android:layout_height="220dp"
+    android:layout_height="180dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     xmlns:tools="http://schemas.android.com/tools"
@@ -17,9 +17,10 @@
 
         <ImageView
             android:id="@+id/featured_post_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
+            android:background="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,15 +30,17 @@
             android:id="@+id/featured_post_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:padding="16dp"
+            android:textStyle="bold"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:textSize="18sp"
+            android:paddingLeft="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/featured_post_image"
             app:layout_constraintVertical_bias="0.0" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

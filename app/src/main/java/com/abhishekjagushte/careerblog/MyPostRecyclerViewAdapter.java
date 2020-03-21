@@ -1,5 +1,6 @@
 package com.abhishekjagushte.careerblog;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final String TAG = "MyPostRecyclerViewAdapter";
     private static final int TYPE_FEATURED = 1;
     private static final int TYPE_NORMAL = 2;
     private final ArrayList<Post> mValues;
@@ -88,9 +90,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
 
+    @SuppressLint("LongLogTag")
     @Override
     public int getItemCount() {
-        Log.d("$$$$$$$$$$$$$$$$$", String.valueOf(mValues.size()));
+        Log.d(TAG, String.valueOf(mValues.size()));
         return mValues.size();
     }
 

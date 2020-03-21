@@ -16,6 +16,10 @@
         <item name="android:textColor">?attr/text_color</item>
     </style>
 
+    <style name="featured_post_title">
+
+    </style>
+
 
 
 </resources>
