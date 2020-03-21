@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/post_imageview"
+            android:layout_marginBottom="16dp"
             android:contentDescription="@string/post_image_description" />
 
         <TextView
@@ -28,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:gravity="start|top"
             android:linksClickable="true"/>
     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.abhishekjagushte.careerblog;
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.ColorRes;
@@ -11,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.abhishekjagushte.careerblog.post.DownloadImageTask;
 import com.abhishekjagushte.careerblog.post.PostContent.Post;
 import com.abhishekjagushte.careerblog.post.PostContentDecoder;
 
@@ -37,8 +40,12 @@ public class PostPage extends Fragment {
 
         TextView post_title = fragment.findViewById(R.id.post_title);
         TextView post_content = fragment.findViewById(R.id.post_content);
+        ImageView imageView = fragment.findViewById(R.id.post_imageview);
 
         post_title.setText(post.getHeadline());
+
+        new DownloadImageTask(imageView).execute(post.getImageURL());
+
         //post_content.setTextColor(getColorFromAttr(R.attr.text_color));
 
         try {
@@ -50,8 +57,6 @@ public class PostPage extends Fragment {
         }
 
         return fragment;
-
-
     }
 
     private int getColorFromAttr(int attr)
