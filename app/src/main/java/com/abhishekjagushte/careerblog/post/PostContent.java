@@ -1,15 +1,5 @@
 package com.abhishekjagushte.careerblog.post;
-
-
-import android.util.Log;
-
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PostContent {
 
@@ -17,19 +7,6 @@ public class PostContent {
      * An array of sample (dummy) items.
      */
     public static ArrayList<Post> ITEMS = new ArrayList<>();
-
-
-//    static {
-//        try {
-//            ITEMS = PostListDecoder.makeHttpRequest();
-//            Log.d("SSSSSSSSSSSSS",ITEMS.get(0).getHeadline());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 
     private static String makeDetails(int position) {
         StringBuilder builder = new StringBuilder();
@@ -42,11 +19,23 @@ public class PostContent {
 
     public static class Post {
 
-        public Post(String headline, String writer, String date, int id) {
+        public String imageURL;
+
+        public Post(String headline, String writer, String date, int id, String imageURL) {
             this.id = id;
             this.headline = headline;
             this.writer = writer;
             this.date = date;
+            this.imageURL = imageURL;
+        }
+
+
+        public String getImageURL() {
+            return imageURL;
+        }
+
+        public void setImageURL(String imageURL) {
+            this.imageURL = imageURL;
         }
 
         public String getHeadline() {

@@ -1,9 +1,5 @@
 package com.abhishekjagushte.careerblog;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.abhishekjagushte.careerblog.PostFragment.OnListFragmentInteractionListener;
-import com.abhishekjagushte.careerblog.dummy.DummyContent.DummyItem;
-import com.abhishekjagushte.careerblog.post.PostContent;
+import com.abhishekjagushte.careerblog.post.DownloadImageTask;
 import com.abhishekjagushte.careerblog.post.PostContent.Post;
 
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+///**
+// * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+// * specified {@link OnListFragmentInteractionListener}.
+// * TODO: Replace the implementation with code for your data type.
+// */
+
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_FEATURED = 1;
@@ -74,6 +72,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             ((NormalPostViewHolder)holder).postHeadline.setText(mValues.get(position).getHeadline());
             ((NormalPostViewHolder)holder).postDate.setText(mValues.get(position).getDate());
 
+            new DownloadImageTask(((NormalPostViewHolder)holder).imageView).execute(mValues.get(position).getImageURL());
+
             ((NormalPostViewHolder)holder).mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -86,6 +86,58 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             });
         }
     }
+
+
+    @Override
+    public int getItemCount() {
+        Log.d("$$$$$$$$$$$$$$$$$", String.valueOf(mValues.size()));
+        return mValues.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position<0) {
+            return TYPE_FEATURED;
+        } else {
+            return TYPE_NORMAL;
+        }
+    }
+
+    //ViewHolder class
+    public class NormalPostViewHolder extends RecyclerView.ViewHolder {
+        public final View mView;
+        public final TextView postHeadline;
+        public final TextView postDate;
+        public Post mItem;
+        private ImageView imageView;
+
+        public NormalPostViewHolder(View view) {
+            super(view);
+            mView = view;
+            postHeadline = (TextView) view.findViewById(R.id.post_headline);
+            postDate = (TextView) view.findViewById(R.id.post_date);
+            imageView = (ImageView)view.findViewById(R.id.post_image);
+        }
+
+    }
+
+    public class FeaturedPostViewHolder extends RecyclerView.ViewHolder {
+        public final ImageView imageView;
+        public final TextView title;
+        public final View mView;
+        public Post mItem;
+
+        public FeaturedPostViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+            imageView = itemView.findViewById(R.id.featured_post_image);
+            title = itemView.findViewById(R.id.featured_post_title);
+        }
+    }
+
+}
+
+
 
 //    @Override
 //    public void onBindViewHolder(final ViewHolder holder, int position) {
@@ -105,22 +157,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 //        });
 //    }
 
-    @Override
-    public int getItemCount() {
-        Log.d("$$$$$$$$$$$$$$$$$", String.valueOf(mValues.size()));
-        return mValues.size();
-    }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position<0) {
-            return TYPE_FEATURED;
-        } else {
-            return TYPE_NORMAL;
-        }
-    }
-
-    //ViewHolder class
+//ViewHolder class
 //    public class ViewHolder extends RecyclerView.ViewHolder {
 //        public final View mView;
 //        public final TextView postHeadline;
@@ -141,35 +179,3 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 //        }
 //    }
 
-
-    //ViewHolder class
-    public class NormalPostViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView postHeadline;
-        public final TextView postDate;
-        public Post mItem;
-
-        public NormalPostViewHolder(View view) {
-            super(view);
-            mView = view;
-            postHeadline = (TextView) view.findViewById(R.id.post_headline);
-            postDate = (TextView) view.findViewById(R.id.post_date);
-        }
-
-    }
-
-    public class FeaturedPostViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView imageView;
-        public final TextView title;
-        public final View mView;
-        public Post mItem;
-
-        public FeaturedPostViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mView = itemView;
-            imageView = itemView.findViewById(R.id.featured_post_image);
-            title = itemView.findViewById(R.id.featured_post_title);
-        }
-    }
-
-}

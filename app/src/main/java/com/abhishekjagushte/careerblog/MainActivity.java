@@ -12,7 +12,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import com.abhishekjagushte.careerblog.dummy.DummyContent;
 import com.abhishekjagushte.careerblog.post.PostContent.Post;
 
 public class MainActivity extends AppCompatActivity implements PostFragment.OnListFragmentInteractionListener, PostFragment.OnSliderClickedListener{

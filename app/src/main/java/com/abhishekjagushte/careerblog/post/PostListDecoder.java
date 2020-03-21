@@ -1,10 +1,16 @@
 package com.abhishekjagushte.careerblog.post;
 
-import android.util.Log;
+import com.abhishekjagushte.careerblog.MainActivity;
+import com.abhishekjagushte.careerblog.PostFragment;
+import com.abhishekjagushte.careerblog.post.PostContent.Post;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,11 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-
-import com.abhishekjagushte.careerblog.MainActivity;
-import com.abhishekjagushte.careerblog.MyPostRecyclerViewAdapter;
-import com.abhishekjagushte.careerblog.PostFragment;
-import com.abhishekjagushte.careerblog.post.PostContent.Post;
 
 public class PostListDecoder {
 
@@ -32,43 +33,49 @@ public class PostListDecoder {
 
 
         final ArrayList<Post>[] posts = new ArrayList[]{new ArrayList<Post>()};
-        final URL[] url = {null};
-        final HttpURLConnection[] http = {null};
-        final InputStream[] inputStream = {null};
-
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                try{
-                    url[0] = new URL(requestURL);
-                    http[0] = (HttpURLConnection) url[0].openConnection();
-                    http[0].setReadTimeout(10000 /* milliseconds */);
-                    http[0].setConnectTimeout(15000 /* milliseconds */);
-                    http[0].setRequestMethod("GET");
-                    http[0].connect();
+                boolean done=false;
 
-                    if(http[0].getResponseCode() == 200){
-                        inputStream[0] = http[0].getInputStream();
-                        posts[0] = parseJSON(readInputStream(inputStream[0]));
+                do{
+                    try{
+                        URL url = null;
+                        HttpURLConnection http = null;
+                        InputStream inputStream = null;
 
-                        MainActivity.handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                PostFragment.adapter.notifyDataSetChanged();
-                                PostFragment.sliderAdapter.notifyDataSetChanged();
-                            }
-                        });
+                        url = new URL(requestURL);
+                        http = (HttpURLConnection) url.openConnection();
+                        http.setReadTimeout(10000 /* milliseconds */);
+                        http.setConnectTimeout(15000 /* milliseconds */);
+                        http.setRequestMethod("GET");
+                        http.connect();
 
+                        if(http.getResponseCode() == 200){
+                            inputStream = http.getInputStream();
+                            posts[0] = parseJSON(readInputStream(inputStream));
+
+                            MainActivity.handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    PostFragment.adapter.notifyDataSetChanged();
+                                    PostFragment.sliderAdapter.notifyDataSetChanged();
+                                }
+                            });
+
+                            done = true;
+                        }
+
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                }while(done);
 
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
             }
         }).start();
@@ -91,7 +98,6 @@ public class PostListDecoder {
     }
 
     private static ArrayList<Post> parseJSON(String JSON) throws JSONException {
-        //JSONObject response = new JSONObject(JSON);
 
         JSONArray response = new JSONArray(JSON);
 
@@ -100,6 +106,15 @@ public class PostListDecoder {
         {
             JSONObject postJSON = response.getJSONObject(i);
 
+            JSONObject contentJSON = postJSON.getJSONObject("content");
+            String content = contentJSON.getString("rendered");
+
+            Document doc = Jsoup.parse(content);
+            Elements e = doc.select("img[src]");
+
+            String img = e.attr("src");
+            System.out.println(img);
+
             int id = postJSON.getInt("id");
 
             JSONObject titleJSON = postJSON.getJSONObject("title");
@@ -107,14 +122,11 @@ public class PostListDecoder {
             String title = titleJSON.getString("rendered");
             String date = postJSON.getString("date");
 
-            Log.d("Decode","*********************"+i);
-
-            Post post = new Post(title, "Admin", date, id);
+            Post post = new Post(title, "Admin", date, id, img);
             post_list.add(post);
             PostContent.ITEMS.add(post);
 
         }
-
         return post_list;
     }
 }

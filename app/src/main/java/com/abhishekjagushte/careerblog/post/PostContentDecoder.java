@@ -43,9 +43,7 @@ public class PostContentDecoder {
     public static void makeHttpRequest(Post post, final TextView view) throws IOException, JSONException {
 
         final ArrayList<Post>[] posts = new ArrayList[]{new ArrayList<Post>()};
-        final URL[] url = {null};
-        final HttpURLConnection[] http = {null};
-        final InputStream[] inputStream = {null};
+
 
         final int id = post.getId();
         new Thread(new Runnable() {
@@ -54,16 +52,21 @@ public class PostContentDecoder {
             public void run() {
 
                 try{
-                    url[0] = new URL(requestURL+Integer.toString(id));
-                    http[0] = (HttpURLConnection) url[0].openConnection();
-                    http[0].setReadTimeout(10000 /* milliseconds */);
-                    http[0].setConnectTimeout(15000 /* milliseconds */);
-                    http[0].setRequestMethod("GET");
-                    http[0].connect();
 
-                    if(http[0].getResponseCode() == 200){
-                        inputStream[0] = http[0].getInputStream();
-                        final String content = parseJSON(readInputStream(inputStream[0]));
+                    URL url = null;
+                    HttpURLConnection http = null;
+                    InputStream inputStream = null;
+
+                    url = new URL(requestURL+Integer.toString(id));
+                    http = (HttpURLConnection) url.openConnection();
+                    http.setReadTimeout(10000 /* milliseconds */);
+                    http.setConnectTimeout(15000 /* milliseconds */);
+                    http.setRequestMethod("GET");
+                    http.connect();
+
+                    if(http.getResponseCode() == 200){
+                        inputStream = http.getInputStream();
+                        final String content = parseJSON(readInputStream(inputStream));
                         final Spanned contentspanned = Html.fromHtml(content,Html.FROM_HTML_MODE_LEGACY);
 
                         MainActivity.handler.post(new Runnable() {

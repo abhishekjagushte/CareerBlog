@@ -8,8 +8,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.25"
-        android:id="@+id/post_image"
-        android:src="@mipmap/ic_launcher"/>
+        android:id="@+id/post_image"/>
 
     <LinearLayout
         android:layout_width="0dp"
