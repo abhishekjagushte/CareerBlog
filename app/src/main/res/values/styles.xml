@@ -26,6 +26,29 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="featured_post_title_new">
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">25dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:textSize">18sp</item>
+        <item name="text_color">@color/white</item>
+    </style>
+
+    <style name="post_page_content">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:linksClickable">true</item>
+        <item name="android:ems">10</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 
 
 </resources>

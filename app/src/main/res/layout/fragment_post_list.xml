@@ -29,6 +29,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
+                app:cardBackgroundColor="@android:color/transparent"
                 android:layout_height="wrap_content">
 
                 <com.smarteist.autoimageslider.SliderView

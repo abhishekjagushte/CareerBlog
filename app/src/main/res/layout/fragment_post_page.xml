@@ -19,19 +19,16 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
+            android:background="@color/white"
             android:id="@+id/post_imageview"
             android:layout_marginBottom="16dp"
+            android:scaleType="fitCenter"
             android:contentDescription="@string/post_image_description" />
 
         <TextView
             android:id="@+id/post_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textColor="@color/white"
-            android:gravity="start|top"
-            android:linksClickable="true"/>
-    </LinearLayout>
+           style="@style/post_page_content"/>
 
+    </LinearLayout>
 </ScrollView>
