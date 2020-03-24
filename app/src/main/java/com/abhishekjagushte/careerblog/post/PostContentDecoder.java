@@ -6,6 +6,8 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,6 +17,12 @@ import androidx.core.content.ContextCompat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
+import org.sufficientlysecure.htmltextview.HtmlFormatter;
+import org.sufficientlysecure.htmltextview.HtmlFormatterBuilder;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,10 +48,10 @@ public class PostContentDecoder {
     private PostContentDecoder(){
     }
 
-    public static void makeHttpRequest(Post post, final TextView view) throws IOException, JSONException {
+    public static void makeHttpRequest(final Post post, final TextView view, final WebView webView, final HtmlTextView tv) throws IOException, JSONException {
 
         final ArrayList<Post>[] posts = new ArrayList[]{new ArrayList<Post>()};
-
+        final String TAG = "PostContentDecoder";
 
         final int id = post.getId();
         new Thread(new Runnable() {
@@ -67,14 +75,17 @@ public class PostContentDecoder {
                     if(http.getResponseCode() == 200){
                         inputStream = http.getInputStream();
                         final String content = parseJSON(readInputStream(inputStream));
-                        final Spanned contentspanned = Html.fromHtml(content,Html.FROM_HTML_MODE_LEGACY);
+                        post.setContent(content);
 
                         MainActivity.handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                view.setText(contentspanned);
-                                Linkify.addLinks(view,Linkify.ALL);
-                                view.setMovementMethod(LinkMovementMethod.getInstance());
+
+                                tv.setHtml(content);
+                                //webView.loadData(content, "text/html", "UTF-8");
+                                //view.setText(contentspanned);
+                                //Linkify.addLinks(view,Linkify.ALL);
+                                //view.setMovementMethod(LinkMovementMethod.getInstance());
                             }
                         });
 

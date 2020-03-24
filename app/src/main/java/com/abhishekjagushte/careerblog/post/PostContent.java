@@ -20,6 +20,7 @@ public class PostContent {
     public static class Post {
 
         public String imageURL;
+        private String content;
 
         public Post(String headline, String writer, String date, int id, String imageURL) {
             this.id = id;
@@ -75,5 +76,13 @@ public class PostContent {
         }
 
         private  int id;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 }

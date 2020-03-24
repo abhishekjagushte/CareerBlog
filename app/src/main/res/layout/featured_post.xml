@@ -16,8 +16,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@drawable/feature_text_bg"
+        android:layout_height="100dp"
+        android:background="@color/cardview_dark_background"
         android:layout_gravity="bottom">
 
         <TextView
